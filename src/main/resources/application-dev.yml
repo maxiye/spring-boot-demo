@@ -1,0 +1,57 @@
+# 非utf-8 报错：java.nio.charset.MalformedInputException: Input length = 1
+server:
+  port: 8081
+#数据库连接地址
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=UTC
+#数据库账号
+    username: root
+#数据库密码
+    password: root
+#数据库驱动
+#The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+    #driver-class-name: com.mysql.jdbc.Driver
+#jpa设置
+  jpa:
+    #是否在控制台显示数据库语句
+    show-sql: true
+    hibernate.ddl-auto: none
+    open-in-view: false
+
+  #Redis
+  redis:
+    database: 0
+# Redis服务器地址
+    #host: 127.0.0.1
+    cluster.nodes: 172.16.111.52:6001,172.16.111.52:6002,172.16.111.54:7002,172.16.111.55:8001,172.16.111.55:8002
+# Redis服务器连接端口
+    port: 6379
+# Redis服务器连接密码（默认为空）
+    password:
+    # 连接超时时间（毫秒）
+    timeout: 3000
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait:
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池中的最小空闲连接
+        min-idle: 0
+  rabbitmq:
+    host: 172.16.13.200
+    port: 5672
+    username: due
+    password: due
+    virtual-host: /
+#    template:
+#      routing-key: Q-SEARCH-01-RK-01
+#      default-receive-queue: Q-SEARCH-01
+#      exchange: gshopper.search
+
+due:
+  random: ${random.int}
+  env: dev

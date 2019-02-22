@@ -1,0 +1,2 @@
+# 非utf-8 报错：java.nio.charset.MalformedInputException: Input length = 1
+spring.profiles.active: dev

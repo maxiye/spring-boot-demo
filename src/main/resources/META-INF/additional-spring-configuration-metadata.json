@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "due.random",
+      "type": "java.lang.Integer",
+      "description": "Description for due.random."
+    },
+    {
+      "name": "due.env",
+      "type": "java.lang.String",
+      "description": "Description for due.ver."
+    }
+  ] }

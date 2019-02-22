@@ -1,0 +1,28 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.3.RELEASE'
+    id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'due'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'//无配置
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'//RabbitMQ
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.session:spring-session-data-redis'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2'
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"//自定义配置项处理
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    runtime('mysql:mysql-connector-java')
+}
