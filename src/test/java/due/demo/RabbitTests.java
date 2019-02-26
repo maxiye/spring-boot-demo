@@ -1,5 +1,6 @@
 package due.demo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import due.demo.bean.RabbitSender;
 import due.demo.model.User;
 import org.junit.Test;
@@ -7,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.HashMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,5 +36,14 @@ public class RabbitTests {
         sender.send("due_ex_topic","due.#", "hello7");
         sender.send("due_ex_fanout","due.dueddd.dd", "hello8");
 //        sender.send("due_ex_fanout","due.dueddd.dd", new User("a", 2));
+    }
+
+    @Test
+    public void test2() throws Exception {
+        HashMap<String, String> content = new HashMap<>(3);
+        content.put("to", "due@gshopper.com");
+        content.put("subject", "test-rabbitmq-email");
+        content.put("content", "rabbitmq-send-email");
+        sender.send("due_ex_topic", "email.erpservice", new ObjectMapper().writeValueAsString(content));
     }
 }

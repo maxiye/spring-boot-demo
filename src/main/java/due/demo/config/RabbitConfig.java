@@ -18,6 +18,11 @@ public class RabbitConfig {
     }
 
     @Bean
+    public Queue Queue3() {
+        return new Queue("due_qu3");
+    }
+
+    @Bean
     public DirectExchange directExchange() {
         return new DirectExchange("due_ex");
     }
@@ -50,6 +55,11 @@ public class RabbitConfig {
     @Bean
     Binding bindingTQ2(@Qualifier("Queue2") Queue queue, TopicExchange topicExchange) {
         return BindingBuilder.bind(queue).to(topicExchange).with("due.#");
+    }
+
+    @Bean
+    Binding bindingTQ3(@Qualifier("Queue3") Queue queue, TopicExchange topicExchange) {
+        return BindingBuilder.bind(queue).to(topicExchange).with("email.#");
     }
 
     @Bean

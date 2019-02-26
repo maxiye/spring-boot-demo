@@ -51,7 +51,29 @@ spring:
 #      routing-key: Q-SEARCH-01-RK-01
 #      default-receive-queue: Q-SEARCH-01
 #      exchange: gshopper.search
+  mail:
+    host: smtp.exmail.qq.com
+    username: erpservice@gshopper.com
+    password:
+    port: 465
+    properties.mail.smtp:
+      # 设置是否需要认证，如果为true,那么用户名和密码就必须的，
+      # 如果设置false，可以不设置用户名和密码，当然也得看你的对接的平台是否支持无密码进行访问的。
+      auth: true
+      #ssl 配置 否则 Could not connect to SMTP host: smtp.exmail.qq.com, port: 465, response: -1
+      starttls:
+        enable: true
+        required: true
+      ssl.enable: true
+      # STARTTLS[1]  是对纯文本通信协议的扩展。它提供一种方式将纯文本连接升级为加密连接（TLS或SSL），而不是另外使用一个端口作加密通信。
+#      socketFactory:
+#        fallback: false
+#        class: javax.net.ssl.SSLSocketFactory
+
 
 due:
   random: ${random.int}
   env: dev
+  email:
+    to: due@gshopper.com
+    from: erpservice@gshopper.com

@@ -9,5 +9,15 @@
       "name": "due.env",
       "type": "java.lang.String",
       "description": "Description for due.ver."
+    },
+    {
+      "name": "due.email.from",
+      "type": "java.lang.String",
+      "description": "Description for due.email.from."
+    },
+    {
+      "name": "due.email.to",
+      "type": "java.lang.String",
+      "description": "Description for due.email.to."
     }
   ] }
