@@ -16,6 +16,10 @@ import java.util.HashMap;
 public class RabbitTests {
     @Autowired
     private RabbitSender sender;
+
+    /**
+     * 发送消息会添加 Properties：content_type=text/plain
+     */
     @Test
     public void test1() {
         System.out.println("hello");

@@ -66,5 +66,4 @@ public class DemoApplicationTests {
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("{\"name\":\"due\",\"age\":10}")));
     }
-
 }

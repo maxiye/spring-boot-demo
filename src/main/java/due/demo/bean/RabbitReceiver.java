@@ -32,10 +32,10 @@ public class RabbitReceiver {
 
     @RabbitListener(queues = "due_qu3")
     public void processQ3(String content) {
+        logger.info("Get msg from due_que3: " + content);
         try {
             HashMap<String, String> msg = new ObjectMapper().readValue(content, new TypeReference<HashMap<String, String>>() {});
             mailService.send(mailService.getMsg(msg.get("to"), msg.get("subject"), msg.get("content")));
-            logger.info("Get msg from due_que3: " + content);
         } catch (Exception e) {
             e.printStackTrace();
         }
