@@ -6,20 +6,25 @@ import due.demo.repository.StudentMapper;
 import due.demo.repository.UserRepository;
 import due.demo.services.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
+/**
+ * @author due
+ */
 @Controller
 @RequestMapping("/hello")
 @ResponseBody
 public class Hello {
+    /**
+     * mockmvc standaloneSetup 测试 触发 NullPointer
+     */
     @Autowired
-    //mockmvc standaloneSetup 测试 触发 NullPointer
     private Config config;
 
     @Autowired
@@ -42,10 +47,16 @@ public class Hello {
         ret.put("data", userRepository.findByNameLike("due%"));
         return ret;
     }
-    @RequestMapping("/hello")//同 hello
+
+    /**
+     * 同 hello
+     * @return String
+     */
+    @RequestMapping("/hello")
     @Cacheable(value = "hello", key = "'world'")
     public String hello() {
-        return helloService.hello() + "port:" + config.port + ";env:" + config.env;
+        UUID uuid = UUID.randomUUID();
+        return helloService.hello() + "; port:" + config.port + "; env:" + config.env + "; uuid:" + uuid.toString();
     }
     @GetMapping("get")
     public HashMap<String, String> get(String name, Integer age) {
@@ -60,8 +71,10 @@ public class Hello {
     public int[] post(int d) {
         return new int[]{d};
     }
+    /**
+     * 必须使用application/json mediaType
+     */
     @PutMapping("put")
-    //必须使用application/json mediaType
     public User put(@RequestBody User user)
     {
         user.setName(user.getName());
@@ -75,8 +88,13 @@ public class Hello {
         user.setAge(0);
         return user;
     }
+
+    /**
+     * {"name":"dd","age":11, "son": {"name":"son", "age":5}}}
+     * @param params HashMap
+     * @return HashMap
+     */
     @PatchMapping("patch")
-    //{"name":"dd","age":11, "son": {"name":"son", "age":5}}}
     public HashMap<String, Object> patch(@RequestBody HashMap<String, Object> params) {
         return params;
     }

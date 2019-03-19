@@ -1,14 +1,15 @@
 package due.demo.model;
 
 
-import org.springframework.stereotype.Repository;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 
+/**
+ * @author due
+ */
 @Entity
 public class User implements Serializable {
     public static final long serialVersionUID = 200000000042L;

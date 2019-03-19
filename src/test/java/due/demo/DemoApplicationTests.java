@@ -1,6 +1,5 @@
 package due.demo;
 
-import due.demo.ctrl.Hello;
 import due.demo.repository.UserRepository;
 import due.demo.services.HelloService;
 import org.junit.Before;

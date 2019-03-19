@@ -2,17 +2,18 @@ package due.demo.bean;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import due.demo.model.User;
 import due.demo.services.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
+/**
+ * @author due
+ */
 @Component
 public class RabbitReceiver {
     private final Logger logger = LoggerFactory.getLogger(getClass());

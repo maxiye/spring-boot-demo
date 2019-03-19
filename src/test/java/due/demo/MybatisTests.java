@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Transactional
+@Transactional //必须有，rollback才生效
 public class MybatisTests {
     @Autowired
     StudentMapper studentMapper;

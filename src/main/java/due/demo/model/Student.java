@@ -1,17 +1,20 @@
 package due.demo.model;
 
+/**
+ * @author due
+ */
 public class Student {
     private Long id;
     private String name;
     private Integer age;
-    private Integer t_id;
+    private Integer tId;
 
-    public Integer getT_id() {
-        return t_id;
+    public Integer gettId() {
+        return tId;
     }
 
-    public void setT_id(Integer t_id) {
-        this.t_id = t_id;
+    public void settId(Integer tId) {
+        this.tId = tId;
     }
 
     public Student() {
@@ -22,10 +25,10 @@ public class Student {
         this.age = age;
     }
 
-    public Student(String name, Integer age, Integer t_id) {
+    public Student(String name, Integer age, Integer tId) {
         this.name = name;
         this.age = age;
-        this.t_id = t_id;
+        this.tId = tId;
     }
 
     public Long getId() {

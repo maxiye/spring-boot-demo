@@ -3,6 +3,9 @@ package due.demo.services;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author due
+ */
 @Service
 public class SchedulerTask {
     private int count = 0;

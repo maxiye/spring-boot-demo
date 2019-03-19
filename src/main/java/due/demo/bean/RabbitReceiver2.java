@@ -4,7 +4,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-//@Component
+/**
+ * @author due
+ */ //@Component
 //@RabbitListener(queues = "due_qu2")
 public class RabbitReceiver2 {
     /*@RabbitHandler

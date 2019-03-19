@@ -2,7 +2,6 @@ package due.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import due.demo.bean.RabbitSender;
-import due.demo.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

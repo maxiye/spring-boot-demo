@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import javax.mail.internet.MimeMessage;
 
 
+/**
+ * @author due
+ */
 @Service
 public class MailService  {
     private final Logger logger = LoggerFactory.getLogger(getClass());
