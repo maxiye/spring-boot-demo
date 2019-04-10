@@ -1,6 +1,6 @@
 package due.demo.ctrl;
 
-import due.demo.bean.Config;
+import due.demo.config.Config;
 import due.demo.model.User;
 import due.demo.repository.StudentMapper;
 import due.demo.repository.UserRepository;

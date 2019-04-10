@@ -1,10 +1,12 @@
 package due.demo;
 
+import due.demo.utils.SpringContextUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -16,7 +18,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class DemoApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        ApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
+        SpringContextUtil.setApplicationContext(applicationContext);
     }
 
     /**

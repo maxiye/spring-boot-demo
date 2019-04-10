@@ -1,4 +1,4 @@
-package due.demo.bean;
+package due.demo.services;
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

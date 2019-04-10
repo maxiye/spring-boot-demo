@@ -1,5 +1,6 @@
 package due.demo;
 
+import due.demo.config.MyAnnotation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -8,10 +9,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.net.*;
 import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.*;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,9 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @RunWith(JUnit4.class)
 public class BaseTests {
@@ -49,7 +45,7 @@ public class BaseTests {
     public void test2() throws Exception {
         System.out.println(new File(".\\src\\").toURI().toURL());//file:/E:/java/spring-demo/./src/
         Class<?> x = new URLClassLoader(new URL[]{new File(".\\src\\test").toURI().toURL()}).loadClass("Test");
-        //反射机制的应用必须要求该类是public访问权限的
+        // 反射机制的应用必须要求该类是public访问权限的
         x.getMethod("test").invoke(x.newInstance());//类必须为public 否则：can not access a member of class Test with modifiers "public"
         //Method method = x.getMethod("test2");//java.lang.NoSuchMethodException
         Method method = x.getDeclaredMethod("test2");
@@ -206,5 +202,110 @@ public class BaseTests {
         System.out.println(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now()));
         System.out.println(DateTimeFormatter.ofPattern("YYYYMMdd_HHmmss").format(LocalDateTime.now()));
         System.out.println(DateTimeFormatter.ofPattern("yyyyMMdd").format(LocalDate.now()));
+    }
+
+    /**
+     * aio
+     * @throws InterruptedException e
+     */
+    @Test
+    public void test8() throws InterruptedException {
+        new Thread(() -> {
+            AsynchronousChannelGroup group;
+            try {
+                group = AsynchronousChannelGroup.withThreadPool(Executors.newFixedThreadPool(4));
+                AsynchronousServerSocketChannel server = AsynchronousServerSocketChannel.open(group)
+                        .bind(new InetSocketAddress(InetAddress.getLocalHost(), 9999));
+                ByteBuffer buffer = ByteBuffer.allocate(2048);
+                server.accept(buffer, new CompletionHandler<AsynchronousSocketChannel, ByteBuffer>() {
+                    @Override
+                    public void completed(AsynchronousSocketChannel result, ByteBuffer attachment) {
+                        try {
+                            buffer.clear();
+                            buffer.put("hello,world".getBytes());
+                            // 写状态反转为读状态，不反转无法读取写入的数据
+                            buffer.flip();
+                            // 实际为读取buffer中的数据
+                            Future<Integer> f = result.write(buffer);
+                            f.get();
+                            System.out.println("server sent at：" + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()));
+                            result.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        server.accept(buffer, this);
+                    }
+
+                    @Override
+                    public void failed(Throwable exc, ByteBuffer attachment) {
+                        exc.printStackTrace();
+                    }
+                });
+                group.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+        try {
+            AsynchronousSocketChannel channel = AsynchronousSocketChannel.open();
+            Future<Void> future = channel.connect(new InetSocketAddress(InetAddress.getLocalHost(), 9999));
+            future.get();
+            ByteBuffer buffer = ByteBuffer.allocate(2048);
+            channel.read(buffer, null, new CompletionHandler<Integer, Void>() {
+                @Override
+                public void completed(Integer result, Void attachment) {
+                    System.out.println("client accept:" + new String(buffer.array()));
+                }
+
+                @Override
+                public void failed(Throwable exc, Void attachment) {
+                    exc.printStackTrace();
+                    try {
+                        channel.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Thread.sleep(10 * 1000);
+    }
+
+    @MyAnnotation(name = "test9", age = 9)
+    @Test(timeout = 1, expected = Exception.class)
+    public void test9() throws Exception {
+        Method[] methods = this.getClass().getDeclaredMethods();
+        for (Method m : methods) {
+            boolean hasAnnotation = m.isAnnotationPresent(Test.class);
+            if (hasAnnotation) {
+                Test annotation = m.getAnnotation(Test.class);
+                System.out.println(m.getName() + ": annotation: " + annotation.annotationType() + "timeout:" + annotation.timeout() +";expected:" + annotation.expected() + ";");
+//                System.out.println(Arrays.toString(m.getAnnotations()));
+            }
+            if (m.isAnnotationPresent(MyAnnotation.class)) {
+                MyAnnotation annotation = m.getAnnotation(MyAnnotation.class);
+                System.out.println(annotation + "name:" + annotation.name() + ";age:" + annotation.age());
+            }
+        }
+        throw new Exception("ha");
+    }
+
+    /**
+     * 第6条：避免创建不必要的对象
+     * String实例
+     * String.matches方法，内部创建了一个Pattern实例，创建一个Pattern实例是昂贵的，因为它需要将正则表达式编译成一个有限状态机
+     * 自动装箱（autoboxing）
+     * 另一种会创建不必要对象的方式是自动装箱（autoboxing）， 这种方式允许程序员混用基本类型和装箱基本类型，然后按需自动装箱和解箱。
+     * 自动装箱模糊了基本类型和装箱基本类型之间的区别，但并没有消除这种区别
+     */
+    @Test
+    public void test10() {
+        // Long：9s，long：845ms
+        long sum = 0L;
+        for (long i = 0; i <= Integer.MAX_VALUE; i++)
+            sum += i;
+        System.out.println(sum);
     }
 }

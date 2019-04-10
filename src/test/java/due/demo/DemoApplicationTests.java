@@ -25,10 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class DemoApplicationTests {
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private HelloService helloService;
-    @Autowired
     private WebApplicationContext web;
     private MockMvc mvc;
 

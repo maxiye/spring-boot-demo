@@ -1,12 +1,11 @@
-package due.demo.bean;
+package due.demo.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import due.demo.services.MailService;
+import due.demo.utils.SpringContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -28,14 +27,12 @@ public class RabbitReceiver {
         System.out.println("Receiver from due_qu2  : " + content);
     }
 
-    @Autowired
-    private MailService mailService;
-
     @RabbitListener(queues = "due_qu3")
     public void processQ3(String content) {
         logger.info("Get msg from due_que3: " + content);
         try {
             HashMap<String, String> msg = new ObjectMapper().readValue(content, new TypeReference<HashMap<String, String>>() {});
+            MailService mailService = SpringContextUtil.getBean(MailService.class);
             mailService.send(mailService.getMsg(msg.get("to"), msg.get("subject"), msg.get("content")));
         } catch (Exception e) {
             e.printStackTrace();
